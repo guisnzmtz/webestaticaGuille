@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bienvenida — Guille Sánchez</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Libre+Franklin:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>  
+    <main class="container" role="main">
+        <section class="left">
+            <h1 class="name">Guille Sánchez </h1>
+            <p class="title">Página de bienvenida — Mazo chula sabes</p>
+
+            <div class="card fade-in" id="welcomeCard" aria-live="polite">
+                <p id="welcomeMessage" class="message">Bienvenido — gracias por visitar mi página. Espero que encuentres
+                    lo que buscas.</p>
+                <p class="meta">Mensaje dinámico — pulsa el botón para probar uno nuevo.</p>
+            </div>
+
+            <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <button id="changeBtn" class="btn" aria-controls="welcomeMessage" aria-pressed="false">Cambiar
+                    mensaje</button>
+                <button id="resetBtn" class="btn secondary" aria-controls="welcomeMessage">Restablecer</button>
+            </div>
+
+            <p class="note">Accesible y responsiva — creado para verse bien en móviles y escritorio.</p>
+        </section>
+
+        <aside class="right">
+            <div class="panel">
+                <div class="avatar" aria-hidden="true">GS</div>
+                <div style="font-weight:700;margin-bottom:6px">Guille Sánchez </div>
+                <div class="small">Diseño limpio · Interfaz mínima · HTML5 + CSS3 + JavaScript</div>
+            </div>
+        </aside>
+    </main>
+</body>
+
+</html>
