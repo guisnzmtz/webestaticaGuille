@@ -5,7 +5,7 @@
         'Gracias por pasarte — que tengas un excelente día.',
         'Explora y disfruta: esta es una página de bienvenida simple y elegante.'
     ];
-
+// Segunda prueba de cambio para git
     const welcomeEl = document.getElementById('welcomeMessage');
     const changeBtn = document.getElementById('changeBtn');
     const resetBtn = document.getElementById('resetBtn');
