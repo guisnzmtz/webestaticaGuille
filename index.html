@@ -1,21 +1,20 @@
 <!doctype html>
 <html lang="es">
-    <!-- Cambio para prueba de git -->
-<head>
+    <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bienvenida — Comprobamos el token storage</title>
     <link rel="stylesheet" href="css/style.css" />
+    
     <script src="js/script.js" defer></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Libre+Franklin:wght@300;400;600;700&display=swap"
         rel="stylesheet">
 </head>
-        <!-- Cuarto cambio prueba git -->
-        <!-- Quinto cambio prueba git -->
-<body>  
+        <body>  
     <main class="container" role="main">
         <section class="left">
             <h1 class="name">Guille Sánchez </h1>
@@ -27,6 +26,13 @@
                 <p class="meta">Mensaje dinámico — pulsa el botón para probar uno nuevo.</p>
             </div>
 
+            <div class="contenedor-form" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                <h3>Prueba de formulario</h3>
+                <input type="text" id="inputPractica" placeholder="Escribe algo aquí..." style="padding: 8px;">
+                <button id="btnPractica" class="btn secondary" style="padding: 8px 16px;">Procesar</button>
+                <p id="resultadoPractica" style="margin-top: 10px; font-weight: bold; color: #333; min-height: 20px;"></p>
+            </div>
+            
             <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                 <button id="changeBtn" class="btn" aria-controls="welcomeMessage" aria-pressed="false">Cambiar
                     mensaje</button>
