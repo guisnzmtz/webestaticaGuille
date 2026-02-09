@@ -16,15 +16,29 @@
 
         // Intenta obtener saludo desde la API REST; si falla, usar texto local
         try {
-            const nombre = (opts.nombre || '');
-            const url = `/api/saludos?nombre=${encodeURIComponent(nombre)}`;
-            const resp = await fetch(url, { method: 'GET' });
-            if (resp.ok) {
-                const data = await resp.json();
-                if (data && data.estado === 'success' && data.mensaje) {
-                    text = data.mensaje;
+                const nombre = (opts.nombre || '');
+
+                // Intentar consulta al endpoint relativo primero (misma origin),
+                // y si falla, intentar el backend en localhost:8080 como fallback.
+                const paths = [
+                    `/api/saludos?nombre=${encodeURIComponent(nombre)}`,
+                    `http://localhost:8080/api/saludos?nombre=${encodeURIComponent(nombre)}`
+                ];
+
+                for (const u of paths) {
+                    try {
+                        const resp = await fetch(u, { method: 'GET' });
+                        if (!resp.ok) continue;
+                        const data = await resp.json();
+                        if (data && data.estado === 'success' && data.mensaje) {
+                            text = data.mensaje;
+                            break;
+                        }
+                    } catch (err) {
+                        // Intento siguiente; registro para depuración
+                        console.warn('fetch fallo para', u, err);
+                    }
                 }
-            }
         } catch (e) {
             // Silencioso: se conservará el texto local como fallback
             console.warn('No se pudo obtener saludo desde API:', e);
