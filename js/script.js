@@ -11,12 +11,28 @@
     const resetBtn = document.getElementById('resetBtn');
     let current = 0;
 
-    function setMessage(index, opts = {}) {
-        const text = messages[index] ?? messages[0];
-        
+    async function setMessage(index, opts = {}) {
+        let text = messages[index] ?? messages[0];
+
+        // Intenta obtener saludo desde la API REST; si falla, usar texto local
+        try {
+            const nombre = (opts.nombre || '');
+            const url = `http://localhost:8080/api/saludos?nombre=${encodeURIComponent(nombre)}`;
+            const resp = await fetch(url, { method: 'GET' });
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && data.estado === 'success' && data.mensaje) {
+                    text = data.mensaje;
+                }
+            }
+        } catch (e) {
+            // Silencioso: se conservará el texto local como fallback
+            console.warn('No se pudo obtener saludo desde API:', e);
+        }
+
         welcomeEl.style.opacity = '0';
         welcomeEl.style.transform = 'translateY(6px)';
-        
+
         setTimeout(() => {
             welcomeEl.textContent = text;
             welcomeEl.style.opacity = '';
@@ -59,6 +75,9 @@
         const card = document.getElementById('welcomeCard');
         if (card) card.classList.remove('fade-in');
     }, 600);
+
+    // Mostrar saludo inicial (se intentará obtener desde la API)
+    setMessage(current).catch(() => {});
 })();
 
 
