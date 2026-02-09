@@ -135,27 +135,50 @@ document.addEventListener('DOMContentLoaded', () => {
             const nombre = nombreSaludo.value.trim();
             apiInfo.textContent = 'Solicitando saludo...';
             apiInfo.style.color = '#666';
-            try {
-                // Reutilizamos la función setMessage a través del endpoint (se intenta en el IIFE)
-                // Hacemos una llamada directa aquí para mostrar respuesta rápidamente
-                const url = `/api/saludos?nombre=${encodeURIComponent(nombre)}`;
-                const resp = await fetch(url);
-                if (!resp.ok) throw new Error(resp.statusText || 'Error en la petición');
-                const data = await resp.json();
-                if (data && data.estado === 'success' && data.mensaje) {
-                    // Actualiza el mensaje principal de bienvenida
-                    const welcomeEl = document.getElementById('welcomeMessage');
-                    if (welcomeEl) welcomeEl.textContent = data.mensaje;
-                    apiInfo.textContent = 'Saludo recibido.';
-                    apiInfo.style.color = '#2b7a2b';
-                } else {
-                    apiInfo.textContent = 'Respuesta inesperada de la API.';
-                    apiInfo.style.color = 'orange';
+
+            const paths = [
+                `/api/saludos?nombre=${encodeURIComponent(nombre)}`,
+                `http://localhost:8080/api/saludos?nombre=${encodeURIComponent(nombre)}`,
+                `http://127.0.0.1:8080/api/saludos?nombre=${encodeURIComponent(nombre)}`
+            ];
+
+            let success = false;
+            let lastError = null;
+
+            for (const u of paths) {
+                try {
+                    const resp = await fetch(u);
+                    if (!resp.ok) {
+                        lastError = new Error(`HTTP ${resp.status} ${resp.statusText}`);
+                        continue;
+                    }
+                    const data = await resp.json();
+                    if (data && data.estado === 'success' && data.mensaje) {
+                        const welcomeEl = document.getElementById('welcomeMessage');
+                        if (welcomeEl) welcomeEl.textContent = data.mensaje;
+                        apiInfo.textContent = `Saludo recibido desde ${u}`;
+                        apiInfo.style.color = '#2b7a2b';
+                        success = true;
+                        break;
+                    } else {
+                        lastError = new Error('Respuesta inesperada de la API');
+                    }
+                } catch (err) {
+                    lastError = err;
+                    console.warn('fetch fallo para', u, err);
                 }
-            } catch (err) {
-                apiInfo.textContent = 'No se pudo conectar con la API.';
+            }
+
+            if (!success) {
+                let msg = 'No se pudo conectar con la API.';
+                if (lastError && lastError.message) msg += ` (${lastError.message})`;
+                // Si la página está abierta por file://, indicar al usuario que use un servidor local
+                if (location && location.protocol === 'file:') {
+                    msg += ' Parece que abriste el archivo con file:// — sirve la carpeta con un servidor HTTP (p. ej. `python -m http.server` o `npx serve`).';
+                }
+                apiInfo.textContent = msg;
                 apiInfo.style.color = 'red';
-                console.warn('Error solicitando saludo:', err);
+                console.warn('No se obtuvo respuesta válida de la API. Último error:', lastError);
             }
         });
     }
