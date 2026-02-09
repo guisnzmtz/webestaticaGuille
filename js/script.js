@@ -17,7 +17,7 @@
         // Intenta obtener saludo desde la API REST; si falla, usar texto local
         try {
             const nombre = (opts.nombre || '');
-            const url = `http://localhost:8080/api/saludos?nombre=${encodeURIComponent(nombre)}`;
+            const url = `/api/saludos?nombre=${encodeURIComponent(nombre)}`;
             const resp = await fetch(url, { method: 'GET' });
             if (resp.ok) {
                 const data = await resp.json();
@@ -108,6 +108,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultadoPractica.style.color = "#333"; 
             }
             resultadoPractica.textContent = respuesta;
+        });
+    }
+
+    // Integración con la API de saludos: usar el input 'nombreSaludo' y el botón 'btnSaludoApi'
+    const nombreSaludo = document.getElementById('nombreSaludo');
+    const btnSaludoApi = document.getElementById('btnSaludoApi');
+    const apiInfo = document.getElementById('apiInfo');
+
+    if (btnSaludoApi && nombreSaludo && apiInfo) {
+        btnSaludoApi.addEventListener('click', async () => {
+            const nombre = nombreSaludo.value.trim();
+            apiInfo.textContent = 'Solicitando saludo...';
+            apiInfo.style.color = '#666';
+            try {
+                // Reutilizamos la función setMessage a través del endpoint (se intenta en el IIFE)
+                // Hacemos una llamada directa aquí para mostrar respuesta rápidamente
+                const url = `/api/saludos?nombre=${encodeURIComponent(nombre)}`;
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error(resp.statusText || 'Error en la petición');
+                const data = await resp.json();
+                if (data && data.estado === 'success' && data.mensaje) {
+                    // Actualiza el mensaje principal de bienvenida
+                    const welcomeEl = document.getElementById('welcomeMessage');
+                    if (welcomeEl) welcomeEl.textContent = data.mensaje;
+                    apiInfo.textContent = 'Saludo recibido.';
+                    apiInfo.style.color = '#2b7a2b';
+                } else {
+                    apiInfo.textContent = 'Respuesta inesperada de la API.';
+                    apiInfo.style.color = 'orange';
+                }
+            } catch (err) {
+                apiInfo.textContent = 'No se pudo conectar con la API.';
+                apiInfo.style.color = 'red';
+                console.warn('Error solicitando saludo:', err);
+            }
         });
     }
 });

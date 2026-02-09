@@ -32,6 +32,15 @@
                 <button id="btnPractica" class="btn secondary" style="padding: 8px 16px;">Procesar</button>
                 <p id="resultadoPractica" style="margin-top: 10px; font-weight: bold; color: #333; min-height: 20px;"></p>
             </div>
+
+            <div class="contenedor-form" style="margin-top: 16px; padding: 15px; border: 1px dashed #ccc; border-radius: 8px;">
+                <h3>Solicitar saludo desde la API</h3>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                    <input type="text" id="nombreSaludo" placeholder="Tu nombre (opcional)" style="padding:8px;min-width:160px;">
+                    <button id="btnSaludoApi" class="btn" style="padding:8px 12px;">Pedir saludo</button>
+                </div>
+                <p id="apiInfo" style="margin-top:10px;color:#444;min-height:20px;">Pulsa "Pedir saludo" para obtener un mensaje desde <code>/api/saludos</code>.</p>
+            </div>
             
             <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                 <button id="changeBtn" class="btn" aria-controls="welcomeMessage" aria-pressed="false">Cambiar
