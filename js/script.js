@@ -5,7 +5,7 @@ if (btnSaludoApi && nombreSaludo && apiInfo) {
             apiInfo.style.color = '#666';
 
             // URL definitiva para tu despliegue apuntando a tu IP y puerto 8080
-            const urlAws = `http://54.226.148.233:8080/api/saludos${nombre ? '?nombre=' + encodeURIComponent(nombre) : ''}`;
+            const urlAws = `http://appguilleapi-env.eba-pxippjat.us-east-1.elasticbeanstalk.com/api/saludos${nombre ? '?nombre=' + encodeURIComponent(nombre) : ''}`;
 
             try {
                 const resp = await fetch(urlAws);
